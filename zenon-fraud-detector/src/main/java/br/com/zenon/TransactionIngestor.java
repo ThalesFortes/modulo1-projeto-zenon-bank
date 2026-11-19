@@ -60,7 +60,17 @@ public class TransactionIngestor {
             int step = Integer.parseInt(chunks[0]);
             TransactionType type = TransactionType.valueOf(chunks[1]);
 
+            if((chunks[2] == null || chunks[2].trim().isEmpty()) ||
+                    (chunks[4] == null || chunks[4].trim().isEmpty())
+                    ||(chunks[5] == null || chunks[5].trim().isEmpty())
+                    ||(chunks[7] == null || chunks[7].trim().isEmpty())
+                    ||(chunks[8] == null || chunks[8].trim().isEmpty())
+                    ) {
+                throw new IllegalArgumentException("O valor de amount não pode ser nulo nem vazio");
+            }
+
             BigDecimal amount = new BigDecimal(chunks[2]);
+
 
             var origin = new TransactionCustomer(chunks[3], new BigDecimal(chunks[4]), new BigDecimal(chunks[5]));
             var recipient = new TransactionCustomer(chunks[6], new BigDecimal(chunks[7]), new BigDecimal(chunks[8]));
@@ -75,7 +85,6 @@ public class TransactionIngestor {
 
         } catch (Exception e){
             System.err.println("Erro ao fazer parse: " + line + " | " + e);
-            e.printStackTrace();
             return Optional.empty();
         }
     }
