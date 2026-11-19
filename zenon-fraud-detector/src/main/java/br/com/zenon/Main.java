@@ -2,6 +2,7 @@ package br.com.zenon;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -33,5 +34,41 @@ public class Main {
         IO.println(transactionsBadData.size());
 
         transactionsBadData.forEach(IO::println);
+
+        // tentando criar objeto invalido
+        // new Transaction(1, TrancationType.PAYMENT, new BigDecimal("9838,64"),
+        //        null,
+        //        new Transaction Customer("M1979787155", new BigDecimal("0.0"), new BigDecimal("0.0")),
+        //        false, false
+        //  );
+
+
+        IO.println("------------------------------------------------");
+
+        var fraudAnalyzer = new FraudAnalyzer(transactions);
+        // Apenas transações onde isFraude == true, imprima o tamanho da lista.
+        long fraudCount = fraudAnalyzer.countFrauds();
+        IO.println("Total de fraudes:" + fraudCount);
+
+        //Imprima as 3 fraudes de maior valor(amount).
+        List <BigDecimal> highestFraudAmounts = fraudAnalyzer.findHighestValueFraudAmounts(3);
+        IO.println("Top 3 fraudes de maior valor");
+        highestFraudAmounts.forEach(amount -> IO.println("- %.2f".formatted(amount)));
+
+        //Ober apenas os nomes dos clientes de origem (nameOrig) dessas fraudes
+        //      e depois gerar uma lista sem repetições
+        List<String> suspiciousClients = fraudAnalyzer.findToSuspiciousClients(5);
+        IO.println("Top 5 clientes suspeitos");
+        suspiciousClients.forEach(IO::println);
+
+        //Calcule o prejuizo total causado pelas fraudes (soma dos amount)
+        BigDecimal totalFraudLoss = fraudAnalyzer.calculateTotalFraudLoss();
+        IO.println("Prejuizo Total: " + totalFraudLoss);
+
+        //Conte quantas fraudes ocorreram por tipo de transação(CASH_OUT, TRANSFER, etc...).
+        Map<TransactionType, Long> fraudCountByType = fraudAnalyzer.countFraudsByType();
+        IO.println("Fraudes por tipo: " + fraudCountByType);
+        fraudCountByType.forEach(( type, count) -> IO.println("- %s: %d".formatted(type,count)));
+
     }
 }
