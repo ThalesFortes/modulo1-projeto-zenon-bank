@@ -1,5 +1,6 @@
 package br.com.zenon;
 
+import javax.xml.validation.Validator;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -71,5 +72,9 @@ public class TransactionIngestor {
 
         var transaction = new Transaction(step, type, amount, origin, recipient, isFraud, isFlaggedFraud);
         return transaction;
+    }
+
+    private void Valide(int param){
+
     }
 }
