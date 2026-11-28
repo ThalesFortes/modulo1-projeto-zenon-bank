@@ -15,18 +15,31 @@ public class TransactionSQLRepository implements TransactionRepository {
              insert into transactions
              (step, `type`, amount, name_origin, old_balance_origin, new_balance_origin, name_recipient, old_balance_recipient, new_balance_recipient, is_fraud, is_flagged_fraud)
              values
-             (?, ?, ?, ?, ?, ?,?,?,?,?);
+             (?, ?, ?, ?, ?, ?,?,?,?,?,?);
              """;
 
      try (Connection conn = ConnectionFactory.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)){
 
         ps.setInt(1, transaction.step());
-        ps.setInt(2, transaction.step());
+        ps.setString(2, transaction.type().name());
+        ps.setBigDecimal(3, transaction.amount());
 
-        ps.execute();
+        ps.setString(4, transaction.origin().name());
+        ps.setBigDecimal(5, transaction.origin().oldBalance());
+        ps.setBigDecimal(6, transaction.origin().newBalance());
+
+         ps.setString(7, transaction.recipient().name());
+         ps.setBigDecimal(8, transaction.recipient().oldBalance());
+         ps.setBigDecimal(9, transaction.recipient().newBalance());
+
+         ps.setBoolean(10, transaction.isFraud());
+         ps.setBoolean(11, transaction.isFlaggerFraud());
+
+         ps.execute();
+
      } catch (SQLException e){
-         throw new RuntimeException(e);
+         throw new RuntimeException("Erro ao salvar nova transação: " + e);
      }
     }
 
@@ -59,7 +72,7 @@ public class TransactionSQLRepository implements TransactionRepository {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao buscar transação da origim: " + originName);
         }
     }
 

@@ -1,5 +1,8 @@
 package br.com.zenon;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public class DBMain {
 
     void main(){
@@ -8,11 +11,15 @@ public class DBMain {
 
         var repository = new TransactionSQLRepository();
 
-        repository.findByOriginName("C1000001")
-                .ifPresentOrElse(IO::println, () -> IO.println("Transacao nao encontrada para: C1000001"));
+        var transactionIngestor = new TransactionIngestor();
 
+        long startTimeSQL = System.nanoTime();
+        List<Transaction> transactions = transactionIngestor.read("data/PS_20174392719_1491204439457_log.csv");
+        IO.println(transactions.size());
+        IO.println("Iniciando adicao das transacoes no BD...");
+        transactions.forEach(repository::save);
 
-        repository.findByOriginName("C123456")
-                .ifPresentOrElse(IO::println, () -> IO.println("Transacao nao encontrada para: C123456"));
+        repository.findByOriginName("C1231006815")
+                .ifPresentOrElse(IO::println, () -> IO.println("Transacao nao encontrada para: C1231006815"));
     }
 }
