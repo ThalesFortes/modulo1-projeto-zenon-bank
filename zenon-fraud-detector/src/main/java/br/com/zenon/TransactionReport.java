@@ -3,6 +3,7 @@ package br.com.zenon;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -64,5 +65,6 @@ public class TransactionReport {
             return Optional.empty();
         }
     }
+
 
 }

@@ -10,8 +10,8 @@ public record Transaction(int step, TransactionType type, BigDecimal amount, Tra
         Objects.requireNonNull(amount);
         Objects.requireNonNull(origin);
         Objects.requireNonNull(recipient);
-        if (step <=0 ) throw new IllegalArgumentException("O valor de setp deve ser positivo: " + step);
-        if (amount.signum() <=0 ) throw new IllegalArgumentException("O valor de setp deve ser positivo: " + step);
+        if (step <=0 ) throw new IllegalArgumentException("O valor de step deve ser positivo: " + step);
+        if (amount.signum() <=0 ) throw new IllegalArgumentException("O valor de amount deve ser positivo: " + amount);
 
     }
 }

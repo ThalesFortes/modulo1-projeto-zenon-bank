@@ -10,5 +10,5 @@ create table transactions (
   --  old_balance_recipient decimal (20,2) not null,
   --  new_balance_recipient decimal (20,2) not null,
   --  is_fraud tinyint(1) default 0,
-  --  is_flaggerFraud tinyint(1) default 0
+  --  is_flagged_fraud tinyint(1) default 0
 );
